@@ -11,7 +11,7 @@ after that write
 
 FOR ALREADY EXISTING REPOSITORY 
 
+git add .
 git commit -m  "title name"
-git remote add origin https://github.com/PratikGadhe/C-Langauge-2025.git
 git branch -m main
 git push -u origin main
