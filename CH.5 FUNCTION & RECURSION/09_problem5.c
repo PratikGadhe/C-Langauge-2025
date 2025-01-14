@@ -8,13 +8,13 @@ int rectangle(int l,int b);
 int main(){
     int s,l,b;
     float r;
-    printf("Enter number :");
+    printf("Enter side of square :");
     scanf("%d",&s);
     printf("Enter radius of a circle:");
     scanf("%f",&r);
-    printf("Enter length :");
+    printf("Enter length of rectangle :");
     scanf("%d",&l);
-    printf("Enter breadth :");
+    printf("Enter breadth of rectangle :");
     scanf("%d",&b);
     square(s);
     circle(r);
