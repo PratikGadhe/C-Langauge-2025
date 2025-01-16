@@ -2,17 +2,16 @@
 
 #include <stdio.h>
 
-void square(int x);
+int square(int x);
 
 int main(){
     int n;
     printf("Enter a Number :");
     scanf("%d",&n);
-    square(n);
+    printf("Square of a number is :%d\n",square(n));
     return 0;
 }
 
-void square(int x){
-    x=x*x;
-    printf("Square of a number is :%d\n",x);
+int square(int x){
+    return x*x;   
 }

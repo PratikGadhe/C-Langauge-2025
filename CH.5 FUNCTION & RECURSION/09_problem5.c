@@ -1,8 +1,8 @@
 //Write functions to calculate area of a square, a circle & a rectangle.
 #include <stdio.h>
 
-void square(int s);
-void circle(float r);
+int square(int s);
+float circle(float r);
 int rectangle(int l,int b);
 
 int main(){
@@ -16,20 +16,17 @@ int main(){
     scanf("%d",&l);
     printf("Enter breadth of rectangle :");
     scanf("%d",&b);
-    square(s);
-    circle(r);
-    rectangle(l,b);
+    printf("Area of Square :%d\n",square(s));
+    printf("Area of Circle :%f\n",circle(r));
+    printf("Area of Rectangle:%d\n",rectangle(l,b));
     return 0;
 }
-void square(int s){
-    s=s*s;
-    printf("Area of square is %d\n",s);
+int square(int s){
+    return s*s;
 }
-void circle(float r){
-    r=3.14*(r*r);
-    printf("Area of a circle is %f\n",r);
+float circle(float r){
+     return 3.14*(r*r);
 }
 int rectangle(int l,int b){
-    printf("Area of rectangle is %d\n",l*b);
     return l*b;
 }
