@@ -1,0 +1,2 @@
+NAME OF STUDENT 	 AGE 	 CGPA
+pratik 	 19 	 7.700000 
