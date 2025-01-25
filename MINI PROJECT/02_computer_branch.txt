@@ -1,0 +1,13 @@
+------ DETAILS OF COMPUTER ENGINEERING BRANCH 1 ------
+NAME OF STUDENT 	 	 ROLL NUMBER 	 	AGE 	 	 CGPA OBTAINED
+pratik vilas gadhe 	 	57 	 	19 	 	7.900000 
+
+------ DETAILS OF COMPUTER ENGINEERING BRANCH 2 ------
+NAME OF STUDENT 	 	 ROLL NUMBER 	 	AGE 	 	 CGPA OBTAINED
+aaditya chandrakant aadhave 	 	32 	 	19 	 	8.900000 
+
+
+------ DETAILS OF COMPUTER ENGINEERING BRANCH 3 ------
+NAME OF STUDENT 	 	 ROLL NUMBER 	 	AGE 	 	 CGPA OBTAINED
+krushna rakesh bhavsar 	 	44 	 	20 	 	9.500000 
+

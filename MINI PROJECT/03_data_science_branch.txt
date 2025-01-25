@@ -1,0 +1,8 @@
+------ DETAILS OF DATA SCIENCE BRANCH 1 ------
+NAME OF STUDENT 	 	 ROLL NUMBER 	 	AGE 	 	 CGPA OBTAINED
+tushar kishor amrutkar 	 	35 	 	19 	 	9.700000 
+
+------ DETAILS OF COMPUTER ENGINEERING BRANCH 3 ------
+NAME OF STUDENT 	 	 ROLL NUMBER 	 	AGE 	 	 CGPA OBTAINED
+sai pradip kumar 	 	45 	 	19 	 	8.300000 
+
