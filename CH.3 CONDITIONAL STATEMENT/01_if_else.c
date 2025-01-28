@@ -7,7 +7,6 @@
     else {
     //do something if FALSE
     }
-
 */
 
 #include <stdio.h>

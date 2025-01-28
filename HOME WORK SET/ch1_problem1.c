@@ -1,4 +1,4 @@
-//wap to calculate perimeter of rectangle
+//wap to calculate perimeter of rectangle.
 #include <stdio.h>
 int main(){
     int a,b;
