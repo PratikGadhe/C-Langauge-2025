@@ -1,5 +1,5 @@
 //Given a positive integer denoting , do the following:
-//If , print the lowercase English word corresponding to the number (e.g., one for , two for , etc.).
+//If print the lowercase English word corresponding to the number (e.g., one for , two for , etc.).
 //If , print Greater than 9.
 #include <stdio.h>
 int main(){
