@@ -10,6 +10,4 @@ int main() {
         n/=10;
     }
     printf("%d\n",sum);
-    // Complete the code
-    
 }
