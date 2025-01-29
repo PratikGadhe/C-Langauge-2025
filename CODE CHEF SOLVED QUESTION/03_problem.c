@@ -10,4 +10,5 @@ int main() {
         n/=10;
     }
     printf("%d\n",sum);
+    return 0;
 }
