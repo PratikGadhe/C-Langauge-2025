@@ -2,10 +2,12 @@
 #include <stdio.h>
 int main(){
     int n;
-    printf("Enter a number : ");
+    printf("Enter a Number :");
     scanf("%d",&n);
-    for(int i=1;i<=n;i++){
-        printf("%d",n*i);
+    int fact = 1;
+    for(int i=1 ; i<=n ; i++){
+        fact = fact * i;
     }
+    printf("factorial number is %d\n",fact);
     return 0;
 }

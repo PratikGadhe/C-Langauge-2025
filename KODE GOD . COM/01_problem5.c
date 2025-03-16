@@ -2,15 +2,15 @@
 #include <stdio.h>
 int main(){
     int amount,time;
-    float rate;
+    int rate;
     printf("Enter Principle Amount :");
     scanf("%d",&amount);
     printf("Enter Rate of Interest :");
-    scanf("%f",&rate);
+    scanf("%d",&rate);
     printf("Enter time (Y/M) :");
     scanf("%d",&time);
-    float simple_interest;
+    int simple_interest;
     simple_interest=(amount*rate*time)/100;
-    printf("Simple Interest for %d /- is %f /-\n",amount,simple_interest);
+    printf("Simple Interest for %d Rs is : %d Rs\n",amount,simple_interest);
     return 0;
 }

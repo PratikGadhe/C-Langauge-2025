@@ -8,7 +8,7 @@ int main(){
     printf("Entered Number in Reverse Order\n");
     while(n>0){
         digit=n%10;
-        printf("%d\n",digit);
+        printf("%d",digit);
         n/=10;
     }
     return 0;

@@ -4,7 +4,7 @@ int main(){
     int n,counter=2;
     printf("Enter a Number : ");
     scanf("%d",&n);
-    printf("First %d even numbers are ",n);
+    printf("First %d even numbers are \n",n);
     for(int i=1;i<=n;i++){
         printf("%d \n",counter);
         counter=counter+2;
