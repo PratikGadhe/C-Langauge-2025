@@ -3,17 +3,17 @@
 #include <stdio.h>
 #include <math.h>
 int main(){
-    int n,count,power=0;
+    int n,count,sum=0;
     printf("Enter a number : ");
     scanf("%d",&n);
     int temp;
     temp=n;
     while(n>0){
         count=n%10;
-        power+=pow(count,3);
+        sum+=pow(count,3);
         n=n/10;
     }
-    if(power==temp){
+    if(sum==temp){
         printf("Yes ! Entered numbers is armstrong number \n");
     }
     else{
