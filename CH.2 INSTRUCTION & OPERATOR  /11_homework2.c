@@ -7,6 +7,11 @@ int main(){
     scanf("%c",&a);
     // single digit -> true (1)
     // double digit -> false (0)
-    printf("%c",a);
+    if(a>=65 && a<=114){
+        printf("Yes,its a digit ! \n");
+    }
+    else{
+        printf("No,its not a digit ! \n");
+    }
     return 0;
 }
