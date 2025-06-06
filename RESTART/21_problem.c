@@ -1,21 +1,23 @@
 //Write a function to reverse an array.
 #include <stdio.h>
-int reverse(int array[],int n);
+void reverse(int array[],int n);
+void print_reverse(int array[],int n);
 int main(){
     int array[]={1,2,3,4,5,6,7,8,9};
-    printf("%d\n",reverse(array,9));
-    return 0;
+    reverse(array,9);
+    print_reverse(array,9);
+    
 }
-int reverse(int array[],int n){
-    array[0]=array[8];
-    array[1]=array[7];
-    array[2]=array[6];
-    array[3]=array[5];
-    array[4]=array[4];
-    array[8]=array[0];
-    array[7]=array[1];
-    array[6]=array[2];
-    array[5]=array[3];
-    array[4]=array[4];
-    return array;
+void reverse(int array[],int n){
+    for(int i=0;i<n/2;i++){
+        int first_val=array[i]; //1,2,3,4,5
+        int second_val=array[n-i-1]; //9,8,7,6,5
+        array[i]=second_val;
+        array[n-i-1]=first_val;
+    }
+}
+void print_reverse(int array[],int n){
+    for(int i=0;i<n;i++){
+        printf("%d \t",array[i]);
+    }printf("\n");
 }
