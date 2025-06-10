@@ -10,7 +10,7 @@ int main(){
 }
 void reverse(int array[],int n){
     for(int i=0;i<n/2;i++){
-        int first_val=array[i]; //1,2,3,4,5
+        int first_val=array[i]; //1,2,3,4
         int second_val=array[n-i-1]; //9,8,7,6,5
         array[i]=second_val;
         array[n-i-1]=first_val;
