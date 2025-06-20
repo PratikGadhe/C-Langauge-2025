@@ -68,7 +68,7 @@ int main(){
             scanf("%f",&co2[i].cgpa);
             printf("\n");
         }
-        printf("\n");
+                printf("\n");
         printf("------ ENTER DETAILS OF COMPUTER ENGINEERING BRANCH 3 ------\n");
         printf("\n");
         int n2;
