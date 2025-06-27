@@ -3,25 +3,42 @@
 #include <stdio.h>
 int main(){
     int n;
-    int count;
-    printf("Enter a Number : ");
+    int rev=0;
+    int count=0;
+    printf("Enter a number : ");
     scanf("%d",&n);
+    if(n==0){
+        printf("Zero\n");
+    }
     while(n>0){
-        count=n%10;
+        rev = rev * 10 + n % 10;        //whenever we have to add two numbers(4+3=43) then multiply first number by 10 (4x10+3=43)and then add it !
         n=n/10;
     }
-    switch (count){
-        case 1 : printf("One ");
-        case 2 : printf("One ");
-        case 3: printf("One ");
-        case 4: printf("One ");
-        case 5: printf("One ");
-        case 6: printf("One ");
-        case 7: printf("One ");
-        case 8: printf("One ");
-        case 9: printf("One ");
-        case 10: printf("One ");
-        
-    }
+    while(rev>0){
+        count=rev%10;
+        switch(count){
+            case 1 : printf("One ");
+                     break;
+            case 2 : printf("Two ");
+                     break;
+            case 3 : printf("Three ");
+                     break;
+            case 4 : printf("Four ");
+                     break;
+            case 5 : printf("Five ");
+                     break;
+            case 6 : printf("Six ");
+                     break;
+            case 7 : printf("Seven ");
+                     break;
+            case 8 : printf("Eight ");
+                     break;
+            case 9 : printf("Nine ");
+                     break;
+            case 0 : printf("Zero ");
+                     break;
+        }
+        rev=rev/10;
+    }printf("\n");
     return 0;
 }
