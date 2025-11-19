@@ -6,6 +6,5 @@ int main(){
     float pie=3.14;
     char star="a";
     int age=20;
-    age=20;
     return 0;
 }

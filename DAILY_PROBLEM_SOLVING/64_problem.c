@@ -16,7 +16,7 @@ int main(){
     printf("Reverse order\n");
     printf("\n");
     for(int j=(n-1);j>=0;j--){
-        printf("Element %d : %d\n",j+1,arr[j]);
-    }
+        printf("%d",arr[j]);
+    }printf("\n");
     return 0;
 }

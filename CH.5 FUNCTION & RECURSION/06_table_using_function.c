@@ -11,7 +11,7 @@ int main(){
     return 0;
 }
 
-void table(int n){     //formal parameter / ouput 
+void table(int n){     //formal parameter / output 
     for(int i=1 ; i<=10 ; i++){
         printf("%d x %d = %d\n",n,i,n*i);
     }

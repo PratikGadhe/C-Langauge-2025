@@ -9,9 +9,7 @@ int main(){
 
     int sum = 0;
     for(int i=1 ; i<=n ; i++){  
-        printf("%d\n",i);
-
-        sum = sum + i;  
+        sum+=i;  
     }
     printf("sum of first n natural number : %d\n",sum);
     return 0;

@@ -1,11 +1,11 @@
 //Arrays as Function Argument
-//function decalration
+//function declaration
 /*
 void pointnumber(int arr[],int n); -> int n is a size of array
 --------OR---------
 void pointnumber(int *arr , int n); ->int n is a size of array
 */
-//function call 
+//function call
 /*
 pointnumber(arr,n);
 -------or--------

@@ -1,5 +1,5 @@
-//how to take input and outut in string array
-//for strinf we use special format specifier that is %s ;
+//how to take input and output in string array
+//for string we use special format specifier that is %s ;
 #include <stdio.h>
 int main(){
     char name[50];

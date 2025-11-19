@@ -1,6 +1,6 @@
 //array of a structure 
 //an array of structure in c is a collection of structure variables in a single array
-//it is used when we want to store and multiplke record where each record contains multiple fields 
+//it is used when we want to store and multiple record where each record contains multiple fields 
 #include <stdio.h>
 struct student {
     int roll_no;

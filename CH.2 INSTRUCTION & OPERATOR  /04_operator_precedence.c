@@ -13,8 +13,8 @@
 #include <stdio.h>
 int main(){
     int a= 4+9*10;
-    printf("%d\n",a);
+    printf("%d\n",a);//94
     int b=4*3/6*2;
-    printf("%d\n",b);
+    printf("%d\n",b);//4
     return 0;
 }

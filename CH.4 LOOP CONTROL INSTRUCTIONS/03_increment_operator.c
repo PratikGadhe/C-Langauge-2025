@@ -1,7 +1,7 @@
 // Increment operator 
 /*
     //increment operator
-    // +i (pre increment)
+    // ++i (pre increment)
     // i++ (post increment)
 */
 

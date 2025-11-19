@@ -2,12 +2,17 @@
 #include <stdio.h>
 int main(){
     int n;
-    int even=2;
+    // int even=2;
     printf("Enter a number : ");
     scanf("%d",&n);
+    // for(int i=1;i<=n;i++){
+    //     printf("%d\n",even);
+    //     even=even+2;
+    // }
     for(int i=1;i<=n;i++){
-        printf("%d\n",even);
-        even=even+2;
+        if(i%2==0){
+            printf("%d\n",i);
+        }
     }
     return 0;
 }

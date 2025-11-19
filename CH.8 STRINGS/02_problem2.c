@@ -14,6 +14,7 @@ int main(){
     printf("Enter Your LAST NAME :");
     scanf("%s",last_name);
     printf("Your Full Name is ");
+    printf("%s",first_name);
     string(first_name);
     string(middle_name);
     string(last_name);

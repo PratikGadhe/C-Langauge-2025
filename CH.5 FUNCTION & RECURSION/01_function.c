@@ -25,4 +25,3 @@ int main(){
 void printhello(){   //function define 
     printf("hello/n");  
 }
-

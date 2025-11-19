@@ -1,4 +1,4 @@
-//if a number is greater than 9 & less than 100 -> True 
+//if a number is greater than 9 & less than 100 -> True (1)
 
 #include <stdio.h>
 int main(){

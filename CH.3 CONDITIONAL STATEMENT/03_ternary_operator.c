@@ -1,5 +1,5 @@
 /*
-    ternary operator is wriiten in given format:
+    ternary operator is writen in given format:
 
    -> Condition? doSomething if TRUE: doSomething if FALSE <-
 

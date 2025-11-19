@@ -5,20 +5,10 @@ struct student1{
     int roll;
     float cgpa;
 };
-struct student2{
-    char *name;
-    int roll;
-    float cgpa;
-};
-struct student3{
-    char *name;
-    int roll;
-    float cgpa;
-};
 int main(){
     struct student1 s1;
-    struct student2 s2;
-    struct student3 s3;
+    struct student1 s2;
+    struct student1 s3;
     s1.name="Pratik gadhe";
     s2.name="Aaditya aadhave";
     s3.name="krushna bhavsar";

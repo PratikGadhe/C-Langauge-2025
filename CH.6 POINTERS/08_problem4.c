@@ -12,5 +12,5 @@ void swap(int *a,int *b){
     t = *a ;  //t = &x
     *a = *b ; //*a = &y
     *b = t ;  //*b = &x
-    printf("After Swapping A=%d & B=%d\n",*a,*b);
+    // printf("After Swapping A=%d & B=%d\n",*a,*b);
 }

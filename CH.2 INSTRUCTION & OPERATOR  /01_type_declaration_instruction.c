@@ -1,7 +1,7 @@
 // There are three types of instruction in c langauge 
 /*
     1. Type declaration instruction
-    2. Arthmatic Instruction 
+    2. Arithmetic Instruction 
     3. Control Instruction
 */
 
