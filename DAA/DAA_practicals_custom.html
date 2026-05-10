@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DAA Practical Programs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+:root {
+  --bg: #f3efe7;
+  --bg-deep: #ebe2d4;
+  --card: rgba(255,255,255,0.72);
+  --card-border: rgba(34, 87, 122, 0.16);
+  --text: #1c2a35;
+  --muted: #5b6d7a;
+  --accent: #0f766e;
+  --accent-2: #c97a2b;
+  --accent-3: #1f4b99;
+  --code-bg: #0f1720;
+  --code-top: #16202c;
+  --code-border: rgba(148, 163, 184, 0.18);
+  --code-text: #dbe6f3;
+  --glow: rgba(15, 118, 110, 0.14);
+  --success: #68d391;
+}
+body {
+  min-height: 100vh;
+  color: var(--text);
+  font-family: 'Space Grotesk', sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(15, 118, 110, 0.12), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(201, 122, 43, 0.12), transparent 28%),
+    linear-gradient(180deg, var(--bg-deep), var(--bg));
+  overflow-x: hidden;
+}
+.bg-noise, .bg-grid { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(31,75,153,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(31,75,153,0.05) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+.bg-noise {
+  background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.25), transparent 24%),
+              radial-gradient(circle at 80% 0%, rgba(255,255,255,0.2), transparent 20%);
+}
+.container {
+  position: relative;
+  z-index: 1;
+  width: min(1120px, calc(100% - 28px));
+  margin: 0 auto;
+  padding: 34px 0 80px;
+}
+.hero {
+  padding: 32px;
+  border: 1px solid rgba(255,255,255,0.45);
+  background: linear-gradient(135deg, rgba(255,255,255,0.76), rgba(255,255,255,0.58));
+  backdrop-filter: blur(16px);
+  border-radius: 28px;
+  box-shadow: 0 24px 60px rgba(28, 42, 53, 0.09);
+  margin-bottom: 22px;
+}
+.eyebrow {
+  display: inline-flex;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(15,118,110,0.1);
+  border: 1px solid rgba(15,118,110,0.18);
+  color: var(--accent);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.hero h1 {
+  font-size: clamp(2.1rem, 4vw, 3.6rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  margin-bottom: 12px;
+}
+.hero p {
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+.hero-chip {
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.56);
+  border: 1px solid rgba(31,75,153,0.12);
+  color: var(--text);
+  font-size: 0.95rem;
+}
+.contents {
+  margin-bottom: 22px;
+  padding: 24px;
+  border-radius: 24px;
+  background: rgba(255,255,255,0.62);
+  border: 1px solid rgba(255,255,255,0.52);
+  backdrop-filter: blur(14px);
+}
+.contents h2 { margin-bottom: 14px; font-size: 1.2rem; }
+.contents-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px 16px;
+}
+.contents a {
+  text-decoration: none;
+  color: var(--accent-3);
+  font-weight: 600;
+}
+.contents a:hover { color: var(--accent); }
+.accordion { display: grid; gap: 16px; }
+.card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 22px;
+  overflow: hidden;
+  backdrop-filter: blur(15px);
+  box-shadow: 0 16px 38px rgba(28, 42, 53, 0.07);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 22px 48px rgba(28, 42, 53, 0.1); border-color: rgba(15,118,110,0.24); }
+.card.active { border-color: rgba(15,118,110,0.28); box-shadow: 0 0 0 1px rgba(15,118,110,0.08), 0 24px 56px var(--glow); }
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 24px;
+  cursor: pointer;
+  user-select: none;
+}
+.card-num {
+  min-width: 62px;
+  padding: 7px 10px;
+  border-radius: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  color: var(--accent);
+  background: rgba(15,118,110,0.1);
+  border: 1px solid rgba(15,118,110,0.2);
+}
+.card-title-wrap { flex: 1; }
+.card-title { font-size: 1.16rem; font-weight: 700; margin-bottom: 4px; }
+.card-subtitle { font-size: 0.9rem; color: var(--muted); }
+.arrow-btn {
+  width: 42px; height: 42px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: rgba(31,75,153,0.07);
+  border: 1px solid rgba(31,75,153,0.12);
+}
+.arrow-btn svg { transition: transform .35s ease; }
+.card.active .arrow-btn svg { transform: rotate(180deg); }
+.card-body { height: 0; overflow: hidden; transition: height .46s ease; }
+.card-body-inner { padding: 0 24px 24px; }
+.divider { height: 1px; margin-bottom: 18px; background: linear-gradient(90deg, rgba(15,118,110,0.55), rgba(31,75,153,0.28), transparent); }
+.tab-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; }
+.tab-btn, .copy-btn, .output-toggle-btn {
+  font-family: 'JetBrains Mono', monospace;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  padding: 9px 14px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: .2s ease;
+}
+.tab-btn { background: rgba(31,75,153,0.06); color: var(--accent-3); border-color: rgba(31,75,153,0.1); }
+.tab-btn.active { background: rgba(15,118,110,0.12); color: var(--accent); border-color: rgba(15,118,110,0.22); }
+.method-label {
+  margin-bottom: 12px;
+  color: var(--accent-2);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+}
+.code-window {
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--code-border);
+  background: var(--code-bg);
+  box-shadow: 0 14px 28px rgba(15,23,32,0.28);
+}
+.code-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.titlebar-left, .titlebar-right { display: flex; align-items: center; gap: 8px; }
+.titlebar-right { margin-left: auto; }
+.dot { width: 11px; height: 11px; border-radius: 50%; }
+.dot-r { background: #f87171; }
+.dot-y { background: #fbbf24; }
+.dot-g { background: #34d399; }
+.code-filename { font-family: 'JetBrains Mono', monospace; color: #9fb1c7; font-size: 12px; margin-left: 4px; }
+.copy-btn { color: #bde7e3; background: rgba(15,118,110,0.12); border-color: rgba(15,118,110,0.26); }
+.copy-btn:hover { background: rgba(15,118,110,0.18); }
+.copy-btn.copied { color: #c6f6d5; border-color: rgba(104,211,145,0.45); background: rgba(104,211,145,0.12); }
+.output-toggle-btn { color: #f4d3a7; background: rgba(201,122,43,0.12); border-color: rgba(201,122,43,0.24); }
+.output-toggle-btn:hover { background: rgba(201,122,43,0.18); }
+.output-toggle-btn.open .btn-arrow { transform: rotate(90deg); }
+.btn-arrow { display: inline-block; transition: transform .25s ease; }
+.code-body { padding: 20px 22px; overflow-x: auto; }
+pre { margin: 0; white-space: pre-wrap; word-break: break-word; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.8; color: var(--code-text); }
+.cm { color: #7b92ab; font-style: italic; }
+.str { color: #f8d48d; }
+.kw { color: #80cbc4; font-weight: 600; }
+.num { color: #f6a6c1; }
+.pp { color: #93c5fd; }
+.output-panel { max-height: 0; overflow: hidden; transition: max-height .4s ease; border-top: 1px solid transparent; }
+.output-panel.open { max-height: 800px; border-top-color: rgba(201,122,43,0.18); }
+.output-panel-inner { padding: 16px 22px 20px; background: rgba(201,122,43,0.06); }
+.output-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #e6c390; margin-bottom: 10px; }
+.output-text { font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.7; color: #f8f2ea; white-space: pre-wrap; }
+.footer-tag { text-align: center; margin-top: 28px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+@media (max-width: 760px) {
+  .container { width: min(100% - 18px, 1120px); padding: 18px 0 48px; }
+  .hero { padding: 22px; border-radius: 22px; }
+  .contents { padding: 18px; }
+  .card-header { padding: 18px; }
+  .card-body-inner { padding: 0 18px 18px; }
+  .titlebar-right { flex-wrap: wrap; justify-content: flex-end; }
+  .code-body { padding: 16px; }
+  pre { font-size: 11px; white-space: pre; overflow-x: auto; word-break: normal; }
+}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-noise"></div>
+<div class="container">
+  <section class="hero">
+    <span class="eyebrow">DAA Lab Record</span>
+    <h1>Design and Analysis of Algorithms Practical Programs</h1>
+    <p>This version keeps the interactive accordion idea from your reference file, but the code shown below is pulled from your own <code>DAA</code> folder. The visual theme is also refreshed with a cleaner, more professional palette.</p>
+    <div class="hero-meta">
+      <div class="hero-chip">8 practical sections</div>
+      <div class="hero-chip">Your C source files</div>
+      <div class="hero-chip">Copy and output panels included</div>
+    </div>
+  </section>
+  <section class="contents">
+    <h2>Contents</h2>
+    <div class="contents-grid"><a href="#card-0">P 01 · Binary Search</a><a href="#card-1">P 02 · Sorting with Divide and Conquer</a><a href="#card-2">P 03 · 0/1 Knapsack</a><a href="#card-3">P 04 · Minimum and Maximum</a><a href="#card-4">P 05 · Single Source Shortest Path</a><a href="#card-5">P 06 · Selection Sort</a><a href="#card-6">P 07 · All-Pairs Shortest Path</a><a href="#card-7">P 08 · Tree Traversal Techniques</a></div></section><div class="accordion"><article class="card" id="card-0"><div class="card-header" onclick="toggleCard(0)">
+      <span class="card-num">P 01</span>
+      <div class="card-title-wrap">
+        <div class="card-title">Binary Search</div>
+        <div class="card-subtitle">Divide and Conquer · Iterative and Recursive</div>
+      </div>
+      <div class="arrow-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M4 6l4 4 4-4" stroke="#0f766e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+    <div class="card-body" id="body-0">
+      <div class="card-body-inner">
+        <div class="divider"></div><div class="tab-row"><button class="tab-btn active" id="tab-0-0" onclick="switchMethod(0, 0, event)">Iterative Method</button><button class="tab-btn" id="tab-0-1" onclick="switchMethod(0, 1, event)">Recursive Method</button></div><section id="method-0-0" style="display:block;"><div class="method-label">// 01. Iterative Method</div><div class="code-window">
+              <div class="code-titlebar">
+                <div class="titlebar-left">
+                  <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+                  <span class="code-filename">01_binary_iterative.c</span>
+                </div>
+                <div class="titlebar-right">
+                  <button class="copy-btn" onclick="copyCode(this,event)"><span>⎘</span> Copy</button>
+                  <button class="output-toggle-btn" onclick="toggleOutput(this,event,'out-0-0')"><span class="btn-arrow">▶</span> Output</button>
+                </div>
+              </div>
+              <div class="code-body"><pre><span class="cm">/*
+WAP to implement Binary search (iterative method) on a Sorted Array using divide and conquer
+*/</span>
+<span class="pp">
+#include &lt;stdio.h&gt;</span>
+<span class="kw">int</span> binary_search(<span class="kw">int</span> arr[] , <span class="kw">int</span> n , <span class="kw">int</span> key)
+{
+    <span class="kw">int</span> low = <span class="num">0</span>;
+    <span class="kw">int</span> high = n-<span class="num">1</span>;
+    <span class="kw">while</span>(low &lt;= high)
+    {
+        <span class="kw">int</span> mid = (low+high)/<span class="num">2</span>;
+        <span class="kw">if</span>(key == arr[mid])
+        {
+            <span class="kw">return</span> mid;
+        }
+        <span class="kw">else</span> <span class="kw">if</span>(key &lt; arr[mid])
+        {
+            high = mid-<span class="num">1</span>;
+        }
+        <span class="kw">else</span>
+        {
+            low = mid + <span class="num">1</span>;
+        }
+    }
+    <span class="kw">return</span> -<span class="num">1</span>;
+}
+<span class="kw">int</span> <span class="kw">main</span>()
+{
+    <span class="kw">int</span> arr[] = {<span class="num">3</span>,<span class="num">6</span>,<span class="num">8</span>,<span class="num">12</span>,<span class="num">14</span>,<span class="num">17</span>,<span class="num">25</span>,<span class="num">29</span>,<span class="num">36</span>,<span class="num">62</span>};
+    <span class="kw">int</span> n = <span class="num">10</span>;
+    <span class="kw">int</span> key;
+    <span class="kw">printf</span>(<span class="str">&quot;Enter a key : &quot;</span>);
+    <span class="kw">scanf</span>(<span class="str">&quot;%d&quot;</span>,&amp;key);
+    <span class="kw">int</span> result = binary_search(arr,n,key);
+    <span class="kw">if</span>(result != -<span class="num">1</span>)
+    {
+        <span class="kw">printf</span>(<span class="str">&quot;Key found at %d\n&quot;</span>,result);
+    }
+    <span class="kw">else</span>
+    {
+        <span class="kw">printf</span>(<span class="str">&quot;Key not found!!&quot;</span>);
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre></div>
+              <div class="output-panel" id="out-0-0">
+                <div class="output-panel-inner">
+                  <div class="output-label">Program Output</div>
+                  <div class="output-text">Enter a key : Key found at 6</div>
+                </div>
+              </div>
+            </div></section><section id="method-0-1" style="display:none;"><div class="method-label">// 02. Recursive Method</div><div class="code-window">
+              <div class="code-titlebar">
+                <div class="titlebar-left">
+                  <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+                  <span class="code-filename">01_binary_recursive.c</span>
+                </div>
+                <div class="titlebar-right">
+                  <button class="copy-btn" onclick="copyCode(this,event)"><span>⎘</span> Copy</button>
+                  <button class="output-toggle-btn" onclick="toggleOutput(this,event,'out-0-1')"><span class="btn-arrow">▶</span> Output</button>
+                </div>
+              </div>
+              <div class="code-body"><pre><span class="cm">/*
+WAP to implement Binary search (recursive method) on a Sorted Array using divide and conquer
+*/</span>
+<span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">int</span> binary_search(<span class="kw">int</span> arr[],<span class="kw">int</span> low,<span class="kw">int</span> high , <span class="kw">int</span> key)
+{
+    <span class="kw">if</span>(low == high)
+    {
+        <span class="kw">if</span>(arr[low] == key)
+        {
+            <span class="kw">return</span> low;
+        }
+        <span class="kw">else</span>
+        {
+            <span class="kw">return</span> -<span class="num">1</span>;
+        }
+    }
+    <span class="kw">else</span>
+    {
+        <span class="kw">int</span> mid = (low+high)/<span class="num">2</span>;
+        <span class="kw">if</span>(arr[mid] == key)
+        {
+            <span class="kw">return</span> mid;
+        }
+        <span class="kw">else</span> <span class="kw">if</span>(key &lt; arr[mid])
+        {
+            <span class="kw">return</span> binary_search(arr , low , mid-<span class="num">1</span> , key);
+        }
+        <span class="kw">else</span>
+        {
+            <span class="kw">return</span> binary_search(arr , mid+<span class="num">1</span> , high , key);
+        }
+    }
+}
+<span class="kw">int</span> <span class="kw">main</span>()
+{
+    <span class="kw">int</span> arr[] = {<span class="num">3</span>,<span class="num">6</span>,<span class="num">8</span>,<span class="num">12</span>,<span class="num">14</span>,<span class="num">17</span>,<span class="num">25</span>,<span class="num">29</span>,<span class="num">36</span>,<span class="num">62</span>};
+    <span class="kw">int</span> n = <span class="num">10</span>;
+    <span class="kw">int</span> key;
+    <span class="kw">printf</span>(<span class="str">&quot;Enter a key : &quot;</span>);
+    <span class="kw">scanf</span>(<span class="str">&quot;%d&quot;</span>,&amp;key);
+    <span class="kw">int</span> low = <span class="num">0</span> , high = n-<span class="num">1</span>;
+    <span class="kw">int</span> result = binary_search(arr , low , high , key);
+    <span class="kw">if</span>(result != -<span class="num">1</span>)
+    {
+        <span class="kw">printf</span>(<span class="str">&quot;Key found at %d\n&quot;</span>,result);
+    }
+    <span class="kw">else</span>
+    {
+        <span class="kw">printf</span>(<span class="str">&quot;Key not found\n&quot;</span>);
+    }
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre></div>
+              <div class="output-panel" id="out-0-1">
+                <div class="output-panel-inner">
+                  <div class="output-label">Program Output</div>
+                  <div class="output-text">Enter a key : Key found at 6</div>
+                </div>
+              </div>
+            </div></section></div></div></article><article class="card" id="card-1"><div class="card-header" onclick="toggleCard(1)">
+      <span class="card-num">P 02</span>
+      <div class="card-title-wrap">
+        <div class="card-title">Sorting with Divide and Conquer</div>
+        <div class="card-subtitle">Quick Sort and Merge Sort</div>
+      </div>
+      <div class="arrow-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M4 6l4 4 4-4" stroke="#0f766e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+    <div class="card-body" id="body-1">
+      <div class="card-body-inner">
+        <div class="divider"></div><div class="tab-row"><button class="tab-btn active" id="tab-1-0" onclick="switchMethod(1, 0, event)">Quick Sort</button><button class="tab-btn" id="tab-1-1" onclick="switchMethod(1, 1, event)">Merge Sort</button></div><section id="method-1-0" style="display:block;"><div class="method-label">// 01. Quick Sort</div><div class="code-window">
+              <div class="code-titlebar">
+                <div class="titlebar-left">
+                  <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+                  <span class="code-filename">02_quick_sort.c</span>
+                </div>
+                <div class="titlebar-right">
+                  <button class="copy-btn" onclick="copyCode(this,event)"><span>⎘</span> Copy</button>
+                  <button class="output-toggle-btn" onclick="toggleOutput(this,event,'out-1-0')"><span class="btn-arrow">▶</span> Output</button>
+                </div>
+              </div>
+              <div class="code-body"><pre><span class="cm">/*
+wap to implement the quick sort algorithm 
+*/</span>
+<span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> quick_sort(<span class="kw">int</span> arr[],<span class="kw">int</span> lb , <span class="kw">int</span> ub);
+<span class="kw">int</span> partition(<span class="kw">int</span> arr[],<span class="kw">int</span> lb ,<span class="kw">int</span> ub);
+<span class="kw">void</span> swap(<span class="kw">int</span> *a,<span class="kw">int</span> *b);
+<span class="kw">void</span> quick_sort(<span class="kw">int</span> arr[] , <span class="kw">int</span> lb , <span class="kw">int</span> ub )
+{
+    <span class="kw">if</span>(lb &lt; ub)
+    {
+        <span class="kw">int</span> loc = partition(arr, lb , ub );
+        quick_sort(arr , lb , loc-<span class="num">1</span>);
+        quick_sort(arr ,loc+<span class="num">1</span> , ub);
+    }
+}
+<span class="kw">int</span> partition(<span class="kw">int</span> arr[] , <span class="kw">int</span> lb , <span class="kw">int</span> ub)
+{
+    <span class="kw">int</span> pivot = arr[lb];
+    <span class="kw">int</span> start = lb;
+    <span class="kw">int</span> end = ub;
+    <span class="kw">while</span>(start &lt; end)
+    {
+        <span class="kw">while</span>(start &lt; ub &amp;&amp; arr[start] &lt;= pivot)
+        {
+            start = start + <span class="num">1</span>;
+        }
+        <span class="kw">while</span>(arr[end] &gt; pivot)
+        {
+            end = end - <span class="num">1</span>;
+        }
+        <span class="kw">if</span>(start &lt; end)
+        {
+            swap(&amp;arr[start] , &amp;arr[end]);
+        }
+    }
+    <span class="cm">// this swap is done to replace the pivot value with arr[end] value </span>
+    swap(&amp;arr[lb],&amp;arr[end]);
+    <span class="kw">return</span> end;
+}
+<span class="kw">void</span> swap(<span class="kw">int</span> *a , <span class="kw">int</span> *b)
+{
+    <span class="kw">int</span> temp = *a;
+    *a = *b ;
+    *b = temp;
+}
+<span class="kw">int</span> <span class="kw">main</span>()
+{
+    <span class="kw">int</span> arr[] = {<span class="num">90</span>,<span class="num">50</span>,<span class="num">20</span>,<span class="num">95</span>,<span class="num">60</span>,<span class="num">30</span>,<span class="num">40</span>,<span class="num">10</span>};
+    <span class="kw">int</span> lb = <span class="num">0</span>;
+    <span class="kw">int</span> ub = <span class="num">7</span>;
+    quick_sort(arr , lb , ub);
+    <span class="kw">printf</span>(<span class="str">&quot;ARRAY AFTER SORTING :\n&quot;</span>);
+    <span class="kw">for</span>(<span class="kw">int</span> i = <span class="num">0</span> ; i &lt;= ub ; i++)
+    {
+        <span class="kw">printf</span>(<span class="str">&quot;%d &quot;</span>,arr[i]);
+    }
+    <span class="kw">printf</span>(<span class="str">&quot;\n&quot;</span>);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre></div>
+              <div class="output-panel" id="out-1-0">
+                <div class="output-panel-inner">
+                  <div class="output-label">Program Output</div>
+                  <div class="output-text">ARRAY AFTER SORTING :
+10 20 30 40 50 60 90 95</div>
+                </div>
+              </div>
+            </div></section><section id="method-1-1" style="display:none;"><div class="method-label">// 02. Merge Sort</div><div class="code-window">
+              <div class="code-titlebar">
+                <div class="titlebar-left">
+                  <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+                  <span class="code-filename">02_merge_sort.c</span>
+                </div>
+                <div class="titlebar-right">
+                  <button class="copy-btn" onclick="copyCode(this,event)"><span>⎘</span> Copy</button>
+                  <button class="output-toggle-btn" onclick="toggleOutput(this,event,'out-1-1')"><span class="btn-arrow">▶</span> Output</button>
+                </div>
+              </div>
+              <div class="code-body"><pre><span class="cm">/*
+wap to implement the merge sort algorithm 
+*/</span>
+<span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">void</span> merge(<span class="kw">int</span> arr[], <span class="kw">int</span> low ,<span class="kw">int</span> mid , <span class="kw">int</span> high)
+{
+    <span class="kw">int</span> i = low;
+    <span class="kw">int</span> j = mid + <span class="num">1</span>;
+    <span class="kw">int</span> temp[<span class="num">100</span>];
+    <span class="kw">int</span> k=<span class="num">0</span>;
+    <span class="kw">while</span>(i &lt;= mid &amp;&amp; j&lt;=high)
+    {
+        <span class="kw">if</span>(arr[i]&lt;arr[j])
+        {
+            temp[k] = arr[i];
+            i++,k++;
+        }
+        <span class="kw">else</span>
+        {
+            temp[k]=arr[j];
+            j++,k++;
+        }
+    }
+    <span class="kw">while</span>(i&lt;=mid)
+        {
+            temp[k]=arr[i];
+            i++,k++;
+        }
+    <span class="kw">while</span>(j&lt;=high)
+        {
+            temp[k]=arr[j];
+            j++,k++;
+        }
+    i = low;
+    k = <span class="num">0</span>;
+    <span class="kw">while</span>(i&lt;=high)
+        {
+            arr[i]=temp[k];
+            i++,k++;
+        }
+}
+
+<span class="kw">void</span> merge_sort(<span class="kw">int</span> arr[], <span class="kw">int</span> low , <span class="kw">int</span> high)
+{
+    
+    <span class="kw">if</span>(low &lt; high)
+    {
+        <span class="kw">int</span> mid = (low + high)/<span class="num">2</span>;
+        merge_sort(arr , low , mid);
+        merge_sort(arr , mid+<span class="num">1</span> ,high);
+        merge(arr , low , mid , high);
+    }
+}
+
+<span class="kw">int</span> <span class="kw">main</span>()
+{
+    <span class="kw">int</span> arr[]= {<span class="num">90</span>,<span class="num">50</span>,<span class="num">20</span>,<span class="num">95</span>,<span class="num">60</span>,<span class="num">30</span>,<span class="num">40</span>,<span class="num">10</span>};
+    <span class="kw">int</span> n = <span class="num">8</span>;
+    merge_sort(arr,<span class="num">0</span>,n-<span class="num">1</span>);
+    <span class="kw">for</span>(<span class="kw">int</span> i = <span class="num">0</span> ; i&lt;n ; i++)
+    {
+        <span class="kw">printf</span>(<span class="str">&quot;%d &quot;</span>,arr[i]);
+    }<span class="kw">printf</span>(<span class="str">&quot;\n&quot;</span>);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre></div>
+              <div class="output-panel" id="out-1-1">
+                <div class="output-panel-inner">
+                  <div class="output-label">Program Output</div>
+                  <div class="output-text">10 20 30 40 50 60 90 95</div>
+                </div>
+              </div>
+            </div></section></div></div></article><article class="card" id="card-2"><div class="card-header" onclick="toggleCard(2)">
+      <span class="card-num">P 03</span>
+      <div class="card-title-wrap">
+        <div class="card-title">0/1 Knapsack</div>
+        <div class="card-subtitle">Dynamic Programming</div>
+      </div>
+      <div class="arrow-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M4 6l4 4 4-4" stroke="#0f766e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+    <div class="card-body" id="body-2">
+      <div class="card-body-inner">
+        <div class="divider"></div><div class="code-window">
+          <div class="code-titlebar">
+            <div class="titlebar-left">
+              <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+              <span class="code-filename">03_knapsack.c</span>
+            </div>
+            <div class="titlebar-right">
+              <button class="copy-btn" onclick="copyCode(this,event)"><span>⎘</span> Copy</button>
+              <button class="output-toggle-btn" onclick="toggleOutput(this,event,'out-2')"><span class="btn-arrow">▶</span> Output</button>
+            </div>
+          </div>
+          <div class="code-body"><pre><span class="cm">/*
+using dynamic programming write a program for 0/1 knapsack
+*/</span>
+<span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">int</span> max(<span class="kw">int</span> a , <span class="kw">int</span> b)
+{
+    <span class="kw">return</span> a&gt;b ? a : b;
+}
+<span class="kw">int</span> <span class="kw">main</span>()
+{
+    <span class="kw">int</span> profit[]={<span class="num">100</span>,<span class="num">20</span>,<span class="num">60</span>,<span class="num">40</span>};
+    <span class="kw">int</span> weight[]={<span class="num">3</span>,<span class="num">2</span>,<span class="num">4</span>,<span class="num">1</span>};
+    <span class="kw">int</span> n = <span class="num">4</span>;
+    <span class="kw">int</span> W = <span class="num">5</span>; <span class="cm">//capacity of knapsack</span>
+    <span class="kw">int</span> K[n+<span class="num">1</span>][W+<span class="num">1</span>]; <span class="cm">//knapsack</span>
+    <span class="cm">//where i represents the nth object , j represents capacity of knapsack</span>
+    <span class="kw">for</span>(<span class="kw">int</span> i = <span class="num">0</span> ; i &lt;=n ; i++)
+    {
+        <span class="kw">for</span>(<span class="kw">int</span> j = <span class="num">0</span> ; j &lt;= W ; j++)
+        {
+            <span class="kw">if</span>(i == <span class="num">0</span> || j == <span class="num">0</span>)
+            {
+                K[i][j] = <span class="num">0</span>;
+            }
+            <span class="kw">else</span> <span class="kw">if</span>(weight[i-<span class="num">1</span>] &lt;= j)
+            {
+                K[i][j]=max(profit[i-<span class="num">1</span>]+K[i-<span class="num">1</span>][j-weight[i-<span class="num">1</span>]],K[i-<span class="num">1</span>][j]);
+            }
+            <span class="kw">else</span>
+            {
+                K[i][j]=K[i-<span class="num">1</span>][j];
+            }
+        }
+    }
+    <span class="kw">printf</span>(<span class="str">&quot;Maximum Profit %d\n&quot;</span>,K[n][W]);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre></div>
+          <div class="output-panel" id="out-2">
+            <div class="output-panel-inner">
+              <div class="output-label">Program Output</div>
+              <div class="output-text">Maximum Profit 140</div>
+            </div>
+          </div>
+        </div></div></div></article><article class="card" id="card-3"><div class="card-header" onclick="toggleCard(3)">
+      <span class="card-num">P 04</span>
+      <div class="card-title-wrap">
+        <div class="card-title">Minimum and Maximum</div>
+        <div class="card-subtitle">Divide and Conquer</div>
+      </div>
+      <div class="arrow-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M4 6l4 4 4-4" stroke="#0f766e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+    <div class="card-body" id="body-3">
+      <div class="card-body-inner">
+        <div class="divider"></div><div class="code-window">
+          <div class="code-titlebar">
+            <div class="titlebar-left">
+              <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+              <span class="code-filename">04_min_max.c</span>
+            </div>
+            <div class="titlebar-right">
+              <button class="copy-btn" onclick="copyCode(this,event)"><span>⎘</span> Copy</button>
+              <button class="output-toggle-btn" onclick="toggleOutput(this,event,'out-3')"><span class="btn-arrow">▶</span> Output</button>
+            </div>
+          </div>
+          <div class="code-body"><pre><span class="cm">/*
+wap to find the min and max using divide and conquer
+*/</span>
+<span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">int</span> min , max;
+<span class="kw">void</span> min_max(<span class="kw">int</span> arr[], <span class="kw">int</span> low , <span class="kw">int</span> high)
+{
+    <span class="kw">int</span> min1 , min2 ;
+    <span class="kw">int</span> max1 , max2 ;
+    <span class="cm">//if arr have only one element </span>
+    <span class="kw">if</span>(low == high)
+    {
+        min = arr[low];
+        max = arr[low];
+    }
+
+    <span class="cm">//if array have two element </span>
+    <span class="kw">else</span> <span class="kw">if</span> (high == low+<span class="num">1</span>)
+    {
+        <span class="kw">if</span>(arr[low] &lt; arr[high])
+        {
+            min = arr[low];
+            max = arr[high];
+        }
+        <span class="kw">else</span>
+        {
+            min = arr[high];
+            max = arr[low];
+        }
+    }
+    <span class="cm">//more than two elements</span>
+    <span class="kw">else</span>
+    {
+        <span class="kw">int</span> mid = (low+high)/<span class="num">2</span>;
+        <span class="cm">//function call to left part of the list</span>
+        min_max(arr , low , mid);
+        min1 = min;
+        max1 = max;
+        <span class="cm">//function call to right part of the list</span>
+        min_max(arr,mid+<span class="num">1</span>,high);
+        min2 = min;
+        max2 = max;
+
+        <span class="kw">if</span>(min1 &lt; min2)
+        {
+            min = min1;
+        }
+        <span class="kw">else</span>
+        {
+            max = max2;
+        }
+
+    }
+}
+<span class="kw">int</span> <span class="kw">main</span>()
+{
+    <span class="kw">int</span> arr[] = {<span class="num">10</span>,<span class="num">4</span>,<span class="num">20</span>,<span class="num">90</span>,<span class="num">1</span>};
+    <span class="kw">int</span> n = <span class="num">5</span>;
+    min_max(arr , <span class="num">0</span> , n-<span class="num">1</span>);
+    <span class="kw">printf</span>(<span class="str">&quot;maximum : %d and minimum : %d\n&quot;</span>,max,min);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre></div>
+          <div class="output-panel" id="out-3">
+            <div class="output-panel-inner">
+              <div class="output-label">Program Output</div>
+              <div class="output-text">maximum : 90 and minimum : 1</div>
+            </div>
+          </div>
+        </div></div></div></article><article class="card" id="card-4"><div class="card-header" onclick="toggleCard(4)">
+      <span class="card-num">P 05</span>
+      <div class="card-title-wrap">
+        <div class="card-title">Single Source Shortest Path</div>
+        <div class="card-subtitle">Dijkstra Algorithm</div>
+      </div>
+      <div class="arrow-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M4 6l4 4 4-4" stroke="#0f766e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+    <div class="card-body" id="body-4">
+      <div class="card-body-inner">
+        <div class="divider"></div><div class="code-window">
+          <div class="code-titlebar">
+            <div class="titlebar-left">
+              <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+              <span class="code-filename">05_single_source.c</span>
+            </div>
+            <div class="titlebar-right">
+              <button class="copy-btn" onclick="copyCode(this,event)"><span>⎘</span> Copy</button>
+              <button class="output-toggle-btn" onclick="toggleOutput(this,event,'out-4')"><span class="btn-arrow">▶</span> Output</button>
+            </div>
+          </div>
+          <div class="code-body"><pre><span class="cm">/*
+wap to implement single source shortest path algorithm
+*/</span>
+<span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="pp">
+#define V 4</span>
+<span class="pp">#define inf 999</span>
+
+<span class="kw">int</span> min_distance(<span class="kw">int</span> dist[], <span class="kw">int</span> visited[])
+{
+    <span class="kw">int</span> min = inf, min_index = -<span class="num">1</span>, i;
+
+    <span class="kw">for</span> (i = <span class="num">0</span>; i &lt; V; i++)
+    {
+        <span class="kw">if</span> (visited[i] == <span class="num">0</span> &amp;&amp; dist[i] &lt;= min)
+        {
+            min = dist[i];
+            min_index = i;
+        }
+    }
+
+    <span class="kw">return</span> min_index;
+}
+
+<span class="kw">void</span> dijkstras(<span class="kw">int</span> graph[V][V], <span class="kw">int</span> source)
+{
+    <span class="kw">int</span> distance[V];
+    <span class="kw">int</span> visited[V];
+
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; V; i++)
+    {
+        distance[i] = inf;
+        visited[i] = <span class="num">0</span>;
+    }
+
+    distance[source] = <span class="num">0</span>;
+
+    <span class="kw">for</span> (<span class="kw">int</span> count = <span class="num">0</span>; count &lt; V - <span class="num">1</span>; count++)
+    {
+        <span class="kw">int</span> u = min_distance(distance, visited);
+        visited[u] = <span class="num">1</span>;
+
+        <span class="kw">for</span> (<span class="kw">int</span> v = <span class="num">0</span>; v &lt; V; v++)
+        {
+            <span class="kw">if</span> (!visited[v] &amp;&amp; graph[u][v] &amp;&amp; distance[u] != inf &amp;&amp;
+                distance[u] + graph[u][v] &lt; distance[v])
+            {
+                distance[v] = distance[u] + graph[u][v];
+            }
+        }
+    }
+
+    <span class="kw">printf</span>(<span class="str">&quot;Vertex \t Distance from source\n&quot;</span>);
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">0</span>; i &lt; V; i++)
+    {
+        <span class="kw">printf</span>(<span class="str">&quot;%d\t%d\n&quot;</span>, i, distance[i]);
+    }
+}
+
+<span class="kw">int</span> <span class="kw">main</span>()
+{
+    <span class="kw">int</span> graph[V][V] = {
+        {<span class="num">0</span>, <span class="num">2</span>, <span class="num">0</span>, <span class="num">6</span>},
+        {<span class="num">2</span>, <span class="num">0</span>, <span class="num">3</span>, <span class="num">8</span>},
+        {<span class="num">0</span>, <span class="num">3</span>, <span class="num">0</span>, <span class="num">0</span>},
+        {<span class="num">6</span>, <span class="num">8</span>, <span class="num">0</span>, <span class="num">0</span>}
+    };
+
+    <span class="kw">int</span> source = <span class="num">0</span>;
+    dijkstras(graph, source);
+
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre></div>
+          <div class="output-panel" id="out-4">
+            <div class="output-panel-inner">
+              <div class="output-label">Program Output</div>
+              <div class="output-text">Vertex 	 Distance from source
+0	0
+1	2
+2	5
+3	6</div>
+            </div>
+          </div>
+        </div></div></div></article><article class="card" id="card-5"><div class="card-header" onclick="toggleCard(5)">
+      <span class="card-num">P 06</span>
+      <div class="card-title-wrap">
+        <div class="card-title">Selection Sort</div>
+        <div class="card-subtitle">Comparison Sorting</div>
+      </div>
+      <div class="arrow-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M4 6l4 4 4-4" stroke="#0f766e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+    <div class="card-body" id="body-5">
+      <div class="card-body-inner">
+        <div class="divider"></div><div class="code-window">
+          <div class="code-titlebar">
+            <div class="titlebar-left">
+              <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+              <span class="code-filename">06_selection_sort.c</span>
+            </div>
+            <div class="titlebar-right">
+              <button class="copy-btn" onclick="copyCode(this,event)"><span>⎘</span> Copy</button>
+              <button class="output-toggle-btn" onclick="toggleOutput(this,event,'out-5')"><span class="btn-arrow">▶</span> Output</button>
+            </div>
+          </div>
+          <div class="code-body"><pre><span class="cm">/*
+wap to implement selection sort algorithm
+*/</span>
+<span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="kw">int</span> min , low;
+<span class="kw">void</span> selection_sort(<span class="kw">int</span> arr[] , <span class="kw">int</span> n)
+{
+    <span class="kw">for</span>(<span class="kw">int</span> k = <span class="num">0</span> ; k&lt;n-<span class="num">1</span>;k++)
+    {
+        low = k;
+        min = arr[k];
+        <span class="kw">for</span>(<span class="kw">int</span> j = k+<span class="num">1</span> ; j&lt;n ;j++)
+        {
+            <span class="kw">if</span>(min &gt; arr[j])
+            {
+                min = arr[j];
+                low = j;
+            }
+        }
+        <span class="kw">int</span> temp = arr[k];
+        arr[k] = arr[low];
+        arr[low] = temp;
+    }
+}
+<span class="kw">int</span> <span class="kw">main</span>()
+{
+    <span class="kw">int</span> arr[]={<span class="num">90</span>,<span class="num">50</span>,<span class="num">20</span>,<span class="num">95</span>,<span class="num">60</span>,<span class="num">30</span>,<span class="num">40</span>,<span class="num">10</span>};
+    <span class="kw">int</span> n = <span class="num">8</span>;
+    selection_sort(arr,n);
+    <span class="kw">printf</span>(<span class="str">&quot;Selection sort\n&quot;</span>);
+    <span class="kw">for</span>(<span class="kw">int</span> i = <span class="num">0</span> ; i&lt;n;i++)
+    {
+        <span class="kw">printf</span>(<span class="str">&quot;%d &quot;</span>,arr[i]);
+    }<span class="kw">printf</span>(<span class="str">&quot;\n&quot;</span>);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre></div>
+          <div class="output-panel" id="out-5">
+            <div class="output-panel-inner">
+              <div class="output-label">Program Output</div>
+              <div class="output-text">Selection sort
+10 20 30 40 50 60 90 95</div>
+            </div>
+          </div>
+        </div></div></div></article><article class="card" id="card-6"><div class="card-header" onclick="toggleCard(6)">
+      <span class="card-num">P 07</span>
+      <div class="card-title-wrap">
+        <div class="card-title">All-Pairs Shortest Path</div>
+        <div class="card-subtitle">Floyd-Warshall Algorithm</div>
+      </div>
+      <div class="arrow-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M4 6l4 4 4-4" stroke="#0f766e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+    <div class="card-body" id="body-6">
+      <div class="card-body-inner">
+        <div class="divider"></div><div class="code-window">
+          <div class="code-titlebar">
+            <div class="titlebar-left">
+              <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+              <span class="code-filename">07_all_pair_shortest.c</span>
+            </div>
+            <div class="titlebar-right">
+              <button class="copy-btn" onclick="copyCode(this,event)"><span>⎘</span> Copy</button>
+              <button class="output-toggle-btn" onclick="toggleOutput(this,event,'out-6')"><span class="btn-arrow">▶</span> Output</button>
+            </div>
+          </div>
+          <div class="code-body"><pre><span class="cm">/*
+Implementation of Floyd-Warshall Algorithm for All-Pairs Shortest Path
+*/</span>
+<span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="pp">
+#define V 4</span>
+<span class="pp">#define inf 999</span>
+<span class="kw">int</span> min_distance(<span class="kw">int</span> a , <span class="kw">int</span> b)
+{
+    <span class="kw">return</span> a &lt; b ? a : b ;
+}
+<span class="kw">void</span> floyd_warshall(<span class="kw">int</span> graph[V][V])
+{
+    <span class="kw">int</span> dist[V][V];
+    <span class="kw">for</span>(<span class="kw">int</span> i = <span class="num">0</span> ; i &lt; V ; i++)
+    {
+        <span class="kw">for</span>(<span class="kw">int</span> j = <span class="num">0</span> ; j&lt;V ; j++)
+        {
+            dist[i][j] = graph[i][j];
+        }
+    }
+
+    <span class="kw">for</span>(<span class="kw">int</span> k = <span class="num">0</span> ; k &lt; V ; k++)
+    {
+        <span class="kw">for</span>(<span class="kw">int</span> i = <span class="num">0</span> ; i &lt; V ; i++)
+        {
+            <span class="kw">for</span>(<span class="kw">int</span> j = <span class="num">0</span> ; j &lt; V ; j++)
+            {
+                dist[i][j] = min_distance(dist[i][j], dist[i][k]+dist[k][j]);
+            }
+        }
+    }
+
+    <span class="kw">for</span>(<span class="kw">int</span> i = <span class="num">0</span> ; i &lt; V ; i++)
+    {
+        <span class="kw">for</span>(<span class="kw">int</span> j = <span class="num">0</span> ; j &lt; V ; j++)
+        {
+            <span class="kw">if</span>(dist[i][j] == inf)
+            {
+                <span class="kw">printf</span>(<span class="str">&quot;inf\t&quot;</span>);
+            }
+            <span class="kw">else</span>
+            {
+                <span class="kw">printf</span>(<span class="str">&quot;%d\t&quot;</span>,dist[i][j]);
+            }
+        }<span class="kw">printf</span>(<span class="str">&quot;\n&quot;</span>);
+    }
+}
+<span class="kw">int</span> <span class="kw">main</span>()
+{
+    <span class="kw">int</span> graph[V][V]={
+        {<span class="num">0</span>,<span class="num">5</span>,inf,<span class="num">10</span>},
+        {inf,<span class="num">0</span>,<span class="num">3</span>,inf},
+        {inf,inf,<span class="num">0</span>,<span class="num">1</span>},
+        {inf,inf,inf,<span class="num">0</span>}
+    };
+    floyd_warshall(graph);
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre></div>
+          <div class="output-panel" id="out-6">
+            <div class="output-panel-inner">
+              <div class="output-label">Program Output</div>
+              <div class="output-text">0	5	8	9	
+inf	0	3	4	
+inf	inf	0	1	
+inf	inf	inf	0</div>
+            </div>
+          </div>
+        </div></div></div></article><article class="card" id="card-7"><div class="card-header" onclick="toggleCard(7)">
+      <span class="card-num">P 08</span>
+      <div class="card-title-wrap">
+        <div class="card-title">Tree Traversal Techniques</div>
+        <div class="card-subtitle">Inorder, Preorder, Postorder</div>
+      </div>
+      <div class="arrow-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M4 6l4 4 4-4" stroke="#0f766e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+    <div class="card-body" id="body-7">
+      <div class="card-body-inner">
+        <div class="divider"></div><div class="code-window">
+          <div class="code-titlebar">
+            <div class="titlebar-left">
+              <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+              <span class="code-filename">08_tree_traversal.c</span>
+            </div>
+            <div class="titlebar-right">
+              <button class="copy-btn" onclick="copyCode(this,event)"><span>⎘</span> Copy</button>
+              <button class="output-toggle-btn" onclick="toggleOutput(this,event,'out-7')"><span class="btn-arrow">▶</span> Output</button>
+            </div>
+          </div>
+          <div class="code-body"><pre><span class="cm">/*
+Program to implement Binary Tree Traversal Techniques (Recursive)
+*/</span>
+<span class="pp">#include &lt;stdio.h&gt;</span>
+<span class="pp">#include &lt;stdlib.h&gt;</span>
+
+<span class="kw">struct</span> node
+{
+    <span class="kw">int</span> data;
+    <span class="kw">struct</span> node* left;
+    <span class="kw">struct</span> node* right;
+};
+
+<span class="cm">//function to create a new node</span>
+
+<span class="kw">struct</span> node* create_node(<span class="kw">int</span> data)
+{
+    <span class="kw">struct</span> node* new_node = (<span class="kw">struct</span> node*)malloc(sizeof(<span class="kw">struct</span> node));
+    new_node -&gt; data = data;
+    new_node -&gt; left = <span class="kw">NULL</span>;
+    new_node -&gt; right = <span class="kw">NULL</span>;
+
+    <span class="kw">return</span> new_node;
+}
+<span class="cm">//left-&gt;root-&gt;right</span>
+<span class="kw">void</span> inorder(<span class="kw">struct</span> node* root)
+{
+    <span class="kw">if</span>(root == <span class="kw">NULL</span>)
+    {
+        <span class="kw">return</span>;
+    }
+    inorder(root-&gt;left);
+    <span class="kw">printf</span>(<span class="str">&quot;%d&quot;</span>,root-&gt;data);
+    inorder(root-&gt;right);
+
+}
+
+<span class="cm">//root-&gt;left-&gt;right</span>
+<span class="kw">void</span> preorder(<span class="kw">struct</span> node* root)
+{
+    <span class="kw">if</span>(root == <span class="kw">NULL</span>)
+    {
+        <span class="kw">return</span>;
+    }
+    <span class="kw">printf</span>(<span class="str">&quot;%d&quot;</span>,root-&gt;data);
+    preorder(root-&gt;left);
+    preorder(root-&gt;right);
+}
+
+<span class="cm">//left-&gt;right-&gt;root</span>
+<span class="kw">void</span> postorder(<span class="kw">struct</span> node* root)
+{
+    <span class="kw">if</span>(root == <span class="kw">NULL</span>)
+    {
+        <span class="kw">return</span>;
+    }
+    postorder(root-&gt;left);
+    postorder(root-&gt;right);
+    <span class="kw">printf</span>(<span class="str">&quot;%d&quot;</span>,root-&gt;data);
+}
+
+<span class="kw">int</span> <span class="kw">main</span>()
+{
+    <span class="cm">/*
+                1
+            2       3
+        4       5    
+    */</span>
+   <span class="kw">struct</span> node* root;
+   root = create_node(<span class="num">1</span>);
+   root-&gt;left = create_node(<span class="num">2</span>);
+   root-&gt;right = create_node(<span class="num">3</span>);
+   root-&gt;left-&gt;left = create_node(<span class="num">4</span>);
+   root-&gt;left-&gt;right = create_node(<span class="num">5</span>);
+
+   <span class="kw">printf</span>(<span class="str">&quot;INORDER TRAVERSAL : &quot;</span>);
+   inorder(root);
+   <span class="kw">printf</span>(<span class="str">&quot;\n&quot;</span>);
+
+   <span class="kw">printf</span>(<span class="str">&quot;PREORDER TRAVERSAL : &quot;</span>);
+   preorder(root);
+   <span class="kw">printf</span>(<span class="str">&quot;\n&quot;</span>);
+   <span class="kw">printf</span>(<span class="str">&quot;POSTORDER TRAVERSAL :&quot;</span>);
+   postorder(root);
+   <span class="kw">printf</span>(<span class="str">&quot;\n&quot;</span>);
+   <span class="kw">return</span> <span class="num">0</span>;
+}
+</pre></div>
+          <div class="output-panel" id="out-7">
+            <div class="output-panel-inner">
+              <div class="output-label">Program Output</div>
+              <div class="output-text">INORDER TRAVERSAL : 42513
+PREORDER TRAVERSAL : 12453
+POSTORDER TRAVERSAL :45231</div>
+            </div>
+          </div>
+        </div></div></div></article></div>
+  <div class="footer-tag">// custom DAA practical page generated from your source files</div>
+</div>
+<script>
+function toggleCard(idx) {
+  const card = document.getElementById('card-' + idx);
+  const body = document.getElementById('body-' + idx);
+  const inner = body.querySelector('.card-body-inner');
+  const isOpen = card.classList.contains('active');
+
+  document.querySelectorAll('.card.active').forEach(otherCard => {
+    if (otherCard !== card) {
+      otherCard.classList.remove('active');
+      const otherBody = otherCard.querySelector('.card-body');
+      otherBody.style.height = otherBody.scrollHeight + 'px';
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => { otherBody.style.height = '0px'; });
+      });
+    }
+  });
+
+  if (!isOpen) {
+    card.classList.add('active');
+    body.style.height = inner.scrollHeight + 24 + 'px';
+    setTimeout(() => {
+      body.style.height = 'auto';
+      const top = card.getBoundingClientRect().top + window.scrollY - 18;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }, 470);
+  } else {
+    card.classList.remove('active');
+    body.style.height = body.scrollHeight + 'px';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => { body.style.height = '0px'; });
+    });
+  }
+}
+
+function switchMethod(cardIdx, methodIdx, e) {
+  e.stopPropagation();
+  const sections = document.querySelectorAll('[id^="method-' + cardIdx + '-"]');
+  const tabs = document.querySelectorAll('[id^="tab-' + cardIdx + '-"]');
+  sections.forEach((section, idx) => {
+    section.style.display = idx === methodIdx ? 'block' : 'none';
+  });
+  tabs.forEach((tab, idx) => {
+    tab.classList.toggle('active', idx === methodIdx);
+  });
+  const card = document.getElementById('card-' + cardIdx);
+  if (card.classList.contains('active')) {
+    const body = document.getElementById('body-' + cardIdx);
+    body.style.height = 'auto';
+  }
+}
+
+function toggleOutput(btn, e, id) {
+  e.stopPropagation();
+  const panel = document.getElementById(id);
+  const isOpen = panel.classList.contains('open');
+  panel.classList.toggle('open', !isOpen);
+  btn.classList.toggle('open', !isOpen);
+}
+
+function copyCode(btn, e) {
+  e.stopPropagation();
+  const pre = btn.closest('.code-window').querySelector('pre');
+  const text = pre.innerText;
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(() => handleCopySuccess(btn)).catch(() => fallbackCopy(text, btn));
+  } else {
+    fallbackCopy(text, btn);
+  }
+}
+
+function fallbackCopy(text, btn) {
+  const textArea = document.createElement('textarea');
+  textArea.value = text;
+  textArea.style.position = 'fixed';
+  document.body.appendChild(textArea);
+  textArea.focus();
+  textArea.select();
+  try {
+    document.execCommand('copy');
+    handleCopySuccess(btn);
+  } catch (err) {
+    console.error('Copy failed', err);
+  }
+  document.body.removeChild(textArea);
+}
+
+function handleCopySuccess(btn) {
+  btn.classList.add('copied');
+  btn.innerHTML = '<span>✓</span> Copied!';
+  setTimeout(() => {
+    btn.classList.remove('copied');
+    btn.innerHTML = '<span>⎘</span> Copy';
+  }, 1800);
+}
+
+document.querySelectorAll('.card-body').forEach(body => {
+  body.style.height = '0px';
+});
+</script>
+</body>
+</html>
